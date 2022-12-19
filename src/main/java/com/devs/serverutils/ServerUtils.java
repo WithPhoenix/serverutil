@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 public class ServerUtils {
 
     public static final String MODID = "serverutils";
-    // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public ServerUtils() {
@@ -45,13 +44,5 @@ public class ServerUtils {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         LOGGER.info("loading Bank!");
-    }
-
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.DEDICATED_SERVER)
-    public static class ServerModEvents {
-        @SubscribeEvent
-        public static void registerCommands(RegisterCommandsEvent event) {
-            PayCommand.register(event.getDispatcher());
-        }
     }
 }
