@@ -43,6 +43,6 @@ public class ServerUtils {
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("loading Bank!");
+        LOGGER.info("loading bank!");
     }
 }
