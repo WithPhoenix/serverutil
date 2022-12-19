@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class PayCommand {
     //todo global an aus variable und command
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("pay")
                 .then(Commands.argument("target", EntityArgument.player()))
                 .then(Commands.argument("amount", IntegerArgumentType.integer(1)))
@@ -27,6 +27,6 @@ public class PayCommand {
             return -1;
         }
         source.sendSuccess(Component.translatable("Du hast ", amount, " an", target.getDisplayName(), "überwiesen!"), false);
-        return -1;
+        return 1;
     }
 }
