@@ -28,11 +28,12 @@ public class PayCommand {
         ServerPlayer sender = source.getPlayer();
         if (sender == null) {
             source.sendFailure(Component.literal("you have to be a player"));
+            return;
         }
         StringBuilder targets = new StringBuilder();
         while (target.iterator().hasNext()) {
             targets.append(target.iterator().next().getDisplayName()).append(" ");
         }
-        source.sendSuccess(Component.translatable("Du hast " + amount + " an" + targets + "überwiesen!"), false);
+        source.sendSuccess(Component.literal("Du hast " + amount + " an" + targets + "überwiesen!"), false);
     }
 }

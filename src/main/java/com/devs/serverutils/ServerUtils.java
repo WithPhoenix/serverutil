@@ -33,8 +33,7 @@ public class ServerUtils {
 
     }
 
-    @SubscribeEvent
-    private void registerPlayer(EntityJoinLevelEvent event) {
+    public void registerPlayer(EntityJoinLevelEvent event) {
 
     }
 
