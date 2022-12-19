@@ -31,9 +31,9 @@ public class PayCommand {
             return;
         }
         StringBuilder targets = new StringBuilder();
-        while (target.iterator().hasNext()) {
-            targets.append(target.iterator().next().getDisplayName()).append(" ");
-        }
-        source.sendSuccess(Component.literal("Du hast " + amount + " an" + targets + "überwiesen!"), false);
+//        while (target.iterator().hasNext()) {
+//            targets.append(target.iterator().next().getDisplayName()).append(" ");
+//        }
+        source.sendSuccess(Component.literal("Du hast " + amount + " an" + "1 player" + "überwiesen!"), false);
     }
 }
