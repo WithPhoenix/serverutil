@@ -17,7 +17,7 @@ public class PayCommand {
         LiteralCommandNode<CommandSourceStack> literalCommandNode = dispatcher.register(Commands.literal("pay").then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("amount", IntegerArgumentType.integer(1)).executes((p) -> {
             Collection<ServerPlayer> collection = EntityArgument.getPlayers(p, "targets");
             if (!collection.isEmpty()) {
-                pay(p.getSource(), collection, IntegerArgumentType.getInteger(p,"amount"));
+                pay(p.getSource(), collection, IntegerArgumentType.getInteger(p, "amount"));
             }
             return collection.size();
         }))));
@@ -29,6 +29,10 @@ public class PayCommand {
         if (sender == null) {
             source.sendFailure(Component.literal("you have to be a player"));
         }
-        source.sendSuccess(Component.translatable("Du hast ", amount, " an", target.iterator().next().getDisplayName(), "überwiesen!"), false);
+        StringBuilder targets = new StringBuilder();
+        while (target.iterator().hasNext()) {
+            targets.append(target.iterator().next().getDisplayName()).append(" ");
+        }
+        source.sendSuccess(Component.translatable("Du hast " + amount + " an" + targets + "überwiesen!"), false);
     }
 }
