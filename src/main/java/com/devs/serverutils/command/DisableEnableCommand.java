@@ -9,13 +9,9 @@ import net.minecraft.network.chat.Component;
 public class DisableEnableCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("money").requires((p) -> {
-            return p.hasPermission(2);
-        }).then(Commands.literal("enable").executes((p) -> {
-            return enable(p.getSource());
-        })).then(Commands.literal("disable").executes((p) -> {
-            return disable(p.getSource());
-        })));
+        dispatcher.register(Commands.literal("money").requires((p) -> p.hasPermission(2))
+                .then(Commands.literal("enable").executes((p) -> enable(p.getSource())))
+                .then(Commands.literal("disable").executes((p) -> disable(p.getSource()))));
     }
 
     private static int enable(CommandSourceStack source) {

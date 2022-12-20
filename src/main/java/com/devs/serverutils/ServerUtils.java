@@ -1,5 +1,6 @@
 package com.devs.serverutils;
 
+import com.devs.serverutils.command.BalanceCommand;
 import com.devs.serverutils.command.ConvertCommand;
 import com.devs.serverutils.command.DisableEnableCommand;
 import com.devs.serverutils.command.PayCommand;
@@ -35,15 +36,9 @@ public class ServerUtils {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-
     }
 
-    @SubscribeEvent
-    public void registerPlayer(final EntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            BankSaveData.INSTANCE.addPlayer(player.getUUID());
-        }
-    }
+
 
     @SubscribeEvent
     public void loadCommands(final RegisterCommandsEvent event) {
@@ -51,10 +46,20 @@ public class ServerUtils {
         DisableEnableCommand.register(dispatcher);
         PayCommand.register(dispatcher);
         ConvertCommand.register(dispatcher);
+        BalanceCommand.register(dispatcher);
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         LOGGER.info("Initialized bank!");
     }
+
+
+
+    //    @SubscribeEvent
+//    public void registerPlayer(final EntityJoinLevelEvent event) {
+//        if (event.getEntity() instanceof ServerPlayer player) {
+//            BankSaveData.INSTANCE.addPlayer(player.getUUID());
+//        }
+//    }
 }
