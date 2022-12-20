@@ -1,9 +1,12 @@
 package com.devs.serverutils;
 
+import com.devs.serverutils.command.ConvertCommand;
 import com.devs.serverutils.command.DisableEnableCommand;
 import com.devs.serverutils.command.PayCommand;
 import com.devs.serverutils.service.BankSaveData;
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -38,14 +41,16 @@ public class ServerUtils {
     @SubscribeEvent
     public void registerPlayer(final EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-           BankSaveData.INSTANCE.addPlayer(player.getUUID());
+            BankSaveData.INSTANCE.addPlayer(player.getUUID());
         }
     }
 
     @SubscribeEvent
     public void loadCommands(final RegisterCommandsEvent event) {
-        DisableEnableCommand.register(event.getDispatcher());
-        PayCommand.register(event.getDispatcher());
+        CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+        DisableEnableCommand.register(dispatcher);
+        PayCommand.register(dispatcher);
+        ConvertCommand.register(dispatcher);
     }
 
     @SubscribeEvent

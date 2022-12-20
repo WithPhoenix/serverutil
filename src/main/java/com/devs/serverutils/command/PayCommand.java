@@ -7,6 +7,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -23,9 +24,10 @@ public class PayCommand {
             return collection.size();
         }))));
         dispatcher.register(Commands.literal("p").redirect(literalCommandNode));
+        dispatcher.register(Commands.literal("bezahle").redirect(literalCommandNode));
     }
 
-    private static void pay(CommandSourceStack source, Collection<ServerPlayer> target, int amount) {
+    private static void pay(CommandSourceStack source, Collection<ServerPlayer> targets, int amount) {
         ServerPlayer sender = source.getPlayer();
         if (sender == null) {
             source.sendFailure(Component.literal("you have to be a player"));
@@ -35,10 +37,22 @@ public class PayCommand {
             source.sendFailure(Component.literal("Geldsystem is deaktiviert!"));
             return;
         }
+        modifyTag(sender.getPersistentData(), amount, targets);
         StringBuilder string = new StringBuilder();
-        for (ServerPlayer p : target) {
+        for (ServerPlayer p : targets) {
             string.append(p.getDisplayName()).append(" ");
         }
         source.sendSuccess(Component.literal("Du hast " + amount + " an " + string + "überwiesen!"), false);
     }
+
+    private static void modifyTag(CompoundTag tag, int amount, Collection<ServerPlayer> targets) {
+        if (tag.contains("balance")) {
+            long balance = tag.getLong("balance");
+            long n = Math.max(balance - amount, 0);
+            tag.putLong("balance", n);
+        } else {
+            //
+        }
+    }
+
 }
