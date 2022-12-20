@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:to_frame",
+    "minecraft:f_by_death"
+  ]
+}

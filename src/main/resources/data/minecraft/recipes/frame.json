@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#/#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:glass_pane"
+    },
+    "/": {
+      "item": "minecraft:item_frame"
+    }
+  },
+  "result": {
+    "item": "minecraft:structure_void",
+    "count": 1
+  }
+}

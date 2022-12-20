@@ -11,7 +11,7 @@ public class BalanceCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralCommandNode<CommandSourceStack> literalCommandNode = dispatcher.register(Commands.literal("balance").executes((c) -> info(c.getSource())));
-        dispatcher.register(Commands.literal("kontostand").redirect(literalCommandNode));
+        LiteralCommandNode<CommandSourceStack> literalCommandNode1 = dispatcher.register(Commands.literal("kontostand").executes((c) -> info(c.getSource())));
     }
 
     private static int info(CommandSourceStack source) {

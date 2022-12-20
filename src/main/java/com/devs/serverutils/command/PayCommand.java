@@ -1,6 +1,5 @@
 package com.devs.serverutils.command;
 
-import com.devs.serverutils.service.BankSaveData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;

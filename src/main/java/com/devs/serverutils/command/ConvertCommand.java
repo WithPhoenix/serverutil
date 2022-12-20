@@ -29,11 +29,13 @@ public class ConvertCommand {
                 .mapToInt(ItemStack::getCount)
                 .sum();
         long balance = sender.getPersistentData().contains("balance") ? sender.getPersistentData().getLong("balance") + count : count;
+
         for (ItemStack stack : sender.getInventory().items) {
             if (stack.getItem() == Items.RAW_IRON) {
-                stack = ItemStack.EMPTY;
+                stack.shrink(stack.getCount());
             }
         }
+        sender.getInventory().setChanged();
         sender.getPersistentData().putLong("balance", balance);
         source.sendSuccess(Component.literal("Erfolgreich $" + count + " aufgeladen"), true);
         return count;
@@ -53,9 +55,10 @@ public class ConvertCommand {
         long balance = sender.getPersistentData().contains("balance") ? sender.getPersistentData().getLong("balance") + inc : inc;
         for (ItemStack stack : sender.getInventory().items) {
             if (stack.getItem() == Items.RAW_GOLD) {
-                stack = ItemStack.EMPTY;
+                stack.shrink(stack.getCount());
             }
         }
+        sender.getInventory().setChanged();
         sender.getPersistentData().putLong("balance", balance);
         source.sendSuccess(Component.literal("Erfolgreich $" + inc + " aufgeladen"), true);
         return inc;
