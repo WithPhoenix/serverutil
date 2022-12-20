@@ -66,4 +66,8 @@ public class PayCommand {
         }
         return true;
     }
+
+    private static int payOffline() {
+        return -1;
+    }
 }
