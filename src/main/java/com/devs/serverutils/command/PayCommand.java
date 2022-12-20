@@ -7,7 +7,10 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.OutgoingChatMessage;
+import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
@@ -31,20 +34,36 @@ public class PayCommand {
             source.sendFailure(Component.literal("you have to be a player"));
             return;
         }
-        modifyTag(sender.getPersistentData(), amount, targets);
-        StringBuilder string = new StringBuilder();
-        for (ServerPlayer p : targets) {
-            string.append(p.getDisplayName()).append(" ");
+        if (modifyTag(source, sender.getDisplayName().getString(), sender.getPersistentData(), amount, targets)) {
+            StringBuilder string = new StringBuilder();
+            for (ServerPlayer p : targets) {
+                string.append(p.getDisplayName().getString()).append(" ");
+            }
+            source.sendSuccess(Component.literal("Du hast " + amount + " an " + string + "überwiesen!"), false);
+            return;
         }
-        source.sendSuccess(Component.literal("Du hast " + amount + " an " + string + "überwiesen!"), false);
+        source.sendFailure(Component.literal("No target found!"));
     }
 
-    private static void modifyTag(CompoundTag tag, int amount, Collection<ServerPlayer> targets) {
+    private static boolean modifyTag(CommandSourceStack stack, String name, CompoundTag tag, int amount, Collection<ServerPlayer> targets) {
         if (tag.contains("balance")) {
+            long factor = targets.size();
             long balance = tag.getLong("balance");
-            long n = Math.max(balance - amount, 0);
+            long n = balance - (amount * factor);
+            if (n < 0) return false;
+
             tag.putLong("balance", n);
-        } else {
+            for (ServerPlayer player : targets) {
+                long b = player.getPersistentData().contains("balance") ? player.getPersistentData().getLong("balance") + amount : amount;
+                player.getPersistentData().putLong("balance", b);
+
+                ChatType.Bound chattype$bound = ChatType.bind(ChatType.CHAT, stack);
+                String msg = name + " hat dir $" + amount + " überwiesen!";
+                PlayerChatMessage message = PlayerChatMessage.system("");
+                OutgoingChatMessage outgoingchatmessage = OutgoingChatMessage.create(message);
+                player.sendChatMessage(outgoingchatmessage, false, chattype$bound);
+            }
         }
+        return true;
     }
 }
