@@ -29,7 +29,6 @@ public class ServerUtils {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::registerPlayer);
 
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -39,7 +38,8 @@ public class ServerUtils {
 
     }
 
-    public void registerPlayer(EntityJoinLevelEvent event) {
+    @SubscribeEvent
+    public void registerPlayer(final EntityJoinLevelEvent event) {
 
     }
 

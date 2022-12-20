@@ -48,6 +48,7 @@ public class BankSaveData extends SavedData {
 
         @SubscribeEvent
         public static void worldLoad(LevelEvent.Load event) {
+
         }
 
     }
