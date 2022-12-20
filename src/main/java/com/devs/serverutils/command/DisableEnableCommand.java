@@ -19,13 +19,13 @@ public class DisableEnableCommand {
     }
 
     private static int enable(CommandSourceStack source) {
-        BankSaveData.ENABLED = true;
+        BankSaveData.INSTANCE.setEnabled(true);
         source.sendSuccess(Component.literal("Bank enabled!"), true);
         return 1;
     }
 
     private static int disable(CommandSourceStack source) {
-        BankSaveData.ENABLED = false;
+        BankSaveData.INSTANCE.setEnabled(false);
         source.sendSuccess(Component.literal("Bank disabled!"), true);
         return 0;
     }

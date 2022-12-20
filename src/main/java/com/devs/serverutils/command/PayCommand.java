@@ -31,14 +31,14 @@ public class PayCommand {
             source.sendFailure(Component.literal("you have to be a player"));
             return;
         }
-        if (!BankSaveData.ENABLED) {
+        if (!BankSaveData.INSTANCE.isEnabled()) {
             source.sendFailure(Component.literal("Geldsystem is deaktiviert!"));
             return;
         }
-        StringBuilder targets = new StringBuilder();
-//        while (target.iterator().hasNext()) {
-//            targets.append(target.iterator().next().getDisplayName()).append(" ");
-//        }
-        source.sendSuccess(Component.literal("Du hast " + amount + " an" + "1 player" + "überwiesen!"), false);
+        StringBuilder string = new StringBuilder();
+        for (ServerPlayer p : target) {
+            string.append(p.getDisplayName()).append(" ");
+        }
+        source.sendSuccess(Component.literal("Du hast " + amount + " an " + string + "überwiesen!"), false);
     }
 }

@@ -4,6 +4,7 @@ import com.devs.serverutils.command.DisableEnableCommand;
 import com.devs.serverutils.command.PayCommand;
 import com.devs.serverutils.service.BankSaveData;
 import com.mojang.logging.LogUtils;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -14,10 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 @Mod(ServerUtils.MODID)
 public class ServerUtils {
@@ -40,7 +37,9 @@ public class ServerUtils {
 
     @SubscribeEvent
     public void registerPlayer(final EntityJoinLevelEvent event) {
-
+        if (event.getEntity() instanceof ServerPlayer player) {
+           BankSaveData.INSTANCE.addPlayer(player.getUUID());
+        }
     }
 
     @SubscribeEvent
