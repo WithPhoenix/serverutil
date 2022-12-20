@@ -1,5 +1,5 @@
-##this mod was created for a minecraft server with friends and their friends
+## this mod was created for a minecraft server with friends and their friends
 
-###features:
+### features:
     -money system based on commands (mainly)
     -some features happening if specific event is fired
