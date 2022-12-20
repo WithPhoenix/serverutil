@@ -34,7 +34,7 @@ public class PayCommand {
             source.sendFailure(Component.literal("you have to be a player"));
             return;
         }
-        if (modifyTag(source, sender.getDisplayName().getString(), sender.getPersistentData(), amount, targets)) {
+        if (modifyTag(source, sender.getPersistentData(), amount, targets)) {
             StringBuilder string = new StringBuilder();
             for (ServerPlayer p : targets) {
                 string.append(p.getDisplayName().getString()).append(" ");
@@ -45,7 +45,7 @@ public class PayCommand {
         source.sendFailure(Component.literal("No target found!"));
     }
 
-    private static boolean modifyTag(CommandSourceStack stack, String name, CompoundTag tag, int amount, Collection<ServerPlayer> targets) {
+    private static boolean modifyTag(CommandSourceStack stack, CompoundTag tag, int amount, Collection<ServerPlayer> targets) {
         if (tag.contains("balance")) {
             long factor = targets.size();
             long balance = tag.getLong("balance");
@@ -58,8 +58,8 @@ public class PayCommand {
                 player.getPersistentData().putLong("balance", b);
 
                 ChatType.Bound chattype$bound = ChatType.bind(ChatType.CHAT, stack);
-                String msg = name + " hat dir $" + amount + " überwiesen!";
-                PlayerChatMessage message = PlayerChatMessage.system("");
+                String msg = " hat dir $" + amount + " überwiesen!";
+                PlayerChatMessage message = PlayerChatMessage.system(msg);
                 OutgoingChatMessage outgoingchatmessage = OutgoingChatMessage.create(message);
                 player.sendChatMessage(outgoingchatmessage, false, chattype$bound);
             }

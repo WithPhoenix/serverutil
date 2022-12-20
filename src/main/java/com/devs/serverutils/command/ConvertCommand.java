@@ -16,6 +16,7 @@ public class ConvertCommand {
         })).then(Commands.literal("gold").executes((p) -> {
             return gold(p.getSource());
         })));
+        dispatcher.register(Commands.literal("umwandeln").redirect(literalCommandNode));
     }
 
     private static int iron(CommandSourceStack source) {
