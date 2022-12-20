@@ -51,7 +51,7 @@ public class PayCommand {
             long n = Math.max(balance - amount, 0);
             tag.putLong("balance", n);
         } else {
-            //
+
         }
     }
 
