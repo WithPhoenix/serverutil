@@ -21,6 +21,7 @@ public class ServerUtils {
 
     public static final String MODID = "serverutils";
     private static final Logger LOGGER = LogUtils.getLogger();
+    public static boolean ACTIVATED = false;
 
     public ServerUtils() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

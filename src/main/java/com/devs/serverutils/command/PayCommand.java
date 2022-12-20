@@ -1,5 +1,6 @@
 package com.devs.serverutils.command;
 
+import com.devs.serverutils.ServerUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -28,6 +29,10 @@ public class PayCommand {
         ServerPlayer sender = source.getPlayer();
         if (sender == null) {
             source.sendFailure(Component.literal("you have to be a player"));
+            return;
+        }
+        if (!ServerUtils.ACTIVATED) {
+            source.sendFailure(Component.literal("Geldsystem is deaktiviert!"));
             return;
         }
         StringBuilder targets = new StringBuilder();
