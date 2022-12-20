@@ -14,7 +14,6 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.Collection;
 
 public class PayCommand {
-    //todo global an aus variable und command
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralCommandNode<CommandSourceStack> literalCommandNode = dispatcher.register(Commands.literal("pay").then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("amount", IntegerArgumentType.integer(1)).executes((p) -> {
             Collection<ServerPlayer> collection = EntityArgument.getPlayers(p, "targets");
@@ -33,10 +32,6 @@ public class PayCommand {
             source.sendFailure(Component.literal("you have to be a player"));
             return;
         }
-        if (!BankSaveData.INSTANCE.isEnabled()) {
-            source.sendFailure(Component.literal("Geldsystem is deaktiviert!"));
-            return;
-        }
         modifyTag(sender.getPersistentData(), amount, targets);
         StringBuilder string = new StringBuilder();
         for (ServerPlayer p : targets) {
@@ -51,8 +46,6 @@ public class PayCommand {
             long n = Math.max(balance - amount, 0);
             tag.putLong("balance", n);
         } else {
-
         }
     }
-
 }
