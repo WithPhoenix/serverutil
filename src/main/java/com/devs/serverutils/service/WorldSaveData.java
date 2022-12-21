@@ -8,15 +8,10 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+public class WorldSaveData extends SavedData {
 
-public class BankSaveData extends SavedData {
-
-    public static BankSaveData INSTANCE = new BankSaveData();
+    static volatile WorldSaveData instance;
     private boolean enabled = false;
-    private Map<UUID, Long> bank = new HashMap<>();
 
     public boolean isEnabled() {
         return this.enabled;
@@ -26,33 +21,36 @@ public class BankSaveData extends SavedData {
         this.enabled = val;
     }
 
-    public void addPlayer(UUID uuid) {
-        if (this.bank.containsKey(uuid)) return;
-        this.bank.put(uuid, 0L);
+    public static synchronized WorldSaveData getInstance() {
+        if (instance == null) {
+            synchronized (WorldSaveData.class) {
+                if (instance == null) {
+                    instance = new WorldSaveData();
+                }
+            }
+        }
+        return instance;
     }
 
-    public static BankSaveData create() {
-        ServerUtils.LOGGER.error("created");
-        return INSTANCE;
+    public static WorldSaveData create() {
+        return instance;
     }
 
-    public static BankSaveData load(CompoundTag tag) {
-        ServerUtils.LOGGER.error("loaded");
-        BankSaveData data = create();
+    public static WorldSaveData load(CompoundTag tag) {
+        WorldSaveData data = create();
         data.enabled = tag.getBoolean("enabled");
         return data;
     }
 
     @Override
     public CompoundTag save(CompoundTag p_77763_) {
-        ServerUtils.LOGGER.error("saved");
         p_77763_.putBoolean("enabled", enabled);
         setDirty();
         return p_77763_;
     }
 
     public static void generateFile(MinecraftServer server) {
-        server.overworld().getDataStorage().computeIfAbsent(BankSaveData::load, BankSaveData::create, "bank");
+        server.overworld().getDataStorage().computeIfAbsent(WorldSaveData::load, WorldSaveData::create, "bank");
     }
 
     @Mod.EventBusSubscriber(modid = ServerUtils.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -60,15 +58,11 @@ public class BankSaveData extends SavedData {
         @SubscribeEvent
         public static void worldSave(LevelEvent.Save event) {
             ServerUtils.LOGGER.info("saved bank!");
-            BankSaveData.generateFile(event.getLevel().getServer());
+            WorldSaveData.generateFile(event.getLevel().getServer());
         }
 
         @SubscribeEvent
         public static void worldLoad(LevelEvent.Load event) {
-
         }
-
     }
-
-
 }

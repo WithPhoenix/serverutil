@@ -1,6 +1,6 @@
 package com.devs.serverutils.command;
 
-import com.devs.serverutils.service.BankSaveData;
+import com.devs.serverutils.service.WorldSaveData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
@@ -19,7 +19,7 @@ public class ClearCommand {
     }
 
     private static int reset(CommandSourceStack stack, Collection<ServerPlayer> targets) {
-        if (BankSaveData.INSTANCE.isEnabled()) {
+        if (WorldSaveData.getInstance().isEnabled()) {
             for (ServerPlayer p : targets) {
                 p.getPersistentData().putLong("balance", 0);
             }

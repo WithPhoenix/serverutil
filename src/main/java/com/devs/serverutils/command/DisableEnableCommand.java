@@ -1,6 +1,6 @@
 package com.devs.serverutils.command;
 
-import com.devs.serverutils.service.BankSaveData;
+import com.devs.serverutils.service.WorldSaveData;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -15,13 +15,13 @@ public class DisableEnableCommand {
     }
 
     private static int enable(CommandSourceStack source) {
-        BankSaveData.INSTANCE.setEnabled(true);
+        WorldSaveData.getInstance().setEnabled(true);
         source.sendSuccess(Component.literal("Bank enabled!"), true);
         return 1;
     }
 
     private static int disable(CommandSourceStack source) {
-        BankSaveData.INSTANCE.setEnabled(false);
+        WorldSaveData.getInstance().setEnabled(false);
         source.sendSuccess(Component.literal("Bank disabled!"), true);
         return 0;
     }

@@ -1,6 +1,6 @@
 package com.devs.serverutils.command;
 
-import com.devs.serverutils.service.BankSaveData;
+import com.devs.serverutils.service.WorldSaveData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
@@ -21,7 +21,7 @@ public class ConvertCommand {
     }
 
     private static int iron(CommandSourceStack source) {
-        if (BankSaveData.INSTANCE.isEnabled()) {
+        if (WorldSaveData.getInstance().isEnabled()) {
             ServerPlayer sender = source.getPlayer();
             if (sender == null) {
                 source.sendFailure(Component.literal("you have to be a player"));
@@ -49,7 +49,7 @@ public class ConvertCommand {
     }
 
     private static int gold(CommandSourceStack source) {
-        if (BankSaveData.INSTANCE.isEnabled()) {
+        if (WorldSaveData.getInstance().isEnabled()) {
             ServerPlayer sender = source.getPlayer();
             if (sender == null) {
                 source.sendFailure(Component.literal("you have to be a player"));

@@ -1,6 +1,6 @@
 package com.devs.serverutils.command;
 
-import com.devs.serverutils.service.BankSaveData;
+import com.devs.serverutils.service.WorldSaveData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -30,7 +30,7 @@ public class PayCommand {
     }
 
     private static void pay(CommandSourceStack source, Collection<ServerPlayer> targets, int amount) {
-        if (BankSaveData.INSTANCE.isEnabled()) {
+        if (WorldSaveData.getInstance().isEnabled()) {
             ServerPlayer sender = source.getPlayer();
             if (sender == null) {
                 source.sendFailure(Component.literal("you have to be a player"));
