@@ -1,5 +1,6 @@
 package com.devs.serverutils.command;
 
+import com.devs.serverutils.service.BankSaveData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
@@ -20,49 +21,58 @@ public class ConvertCommand {
     }
 
     private static int iron(CommandSourceStack source) {
-        ServerPlayer sender = source.getPlayer();
-        if (sender == null) {
-            source.sendFailure(Component.literal("you have to be a player"));
-            return -1;
-        }
-        int count = sender.getInventory().items.stream()
-                .filter(stack -> stack.getItem() == Items.RAW_IRON)
-                .mapToInt(ItemStack::getCount)
-                .sum();
-        long balance = sender.getPersistentData().contains("balance") ? sender.getPersistentData().getLong("balance") + count : count;
-
-        for (ItemStack stack : sender.getInventory().items) {
-            if (stack.getItem() == Items.RAW_IRON) {
-                stack.shrink(stack.getCount());
+        if (BankSaveData.INSTANCE.isEnabled()) {
+            ServerPlayer sender = source.getPlayer();
+            if (sender == null) {
+                source.sendFailure(Component.literal("you have to be a player"));
+                return -1;
             }
+            int count = sender.getInventory().items.stream()
+                    .filter(stack -> stack.getItem() == Items.RAW_IRON)
+                    .mapToInt(ItemStack::getCount)
+                    .sum();
+            long balance = sender.getPersistentData().contains("balance") ? sender.getPersistentData().getLong("balance") + count : count;
+
+            for (ItemStack stack : sender.getInventory().items) {
+                if (stack.getItem() == Items.RAW_IRON) {
+                    stack.shrink(stack.getCount());
+                }
+            }
+            sender.getInventory().setChanged();
+            sender.getPersistentData().putLong("balance", balance);
+            source.sendSuccess(Component.literal("Erfolgreich $" + count + " aufgeladen"), true);
+            return count;
+
         }
-        sender.getInventory().setChanged();
-        sender.getPersistentData().putLong("balance", balance);
-        source.sendSuccess(Component.literal("Erfolgreich $" + count + " aufgeladen"), true);
-        return count;
+        source.sendFailure(Component.literal("Money is deactivated!"));
+        return 0;
     }
 
     private static int gold(CommandSourceStack source) {
-        ServerPlayer sender = source.getPlayer();
-        if (sender == null) {
-            source.sendFailure(Component.literal("you have to be a player"));
-            return -1;
-        }
-        int count = sender.getInventory().items.stream()
-                .filter(stack -> stack.getItem() == Items.RAW_GOLD)
-                .mapToInt(ItemStack::getCount)
-                .sum();
-        int inc = count * 3;
-        long balance = sender.getPersistentData().contains("balance") ? sender.getPersistentData().getLong("balance") + inc : inc;
-        for (ItemStack stack : sender.getInventory().items) {
-            if (stack.getItem() == Items.RAW_GOLD) {
-                stack.shrink(stack.getCount());
+        if (BankSaveData.INSTANCE.isEnabled()) {
+            ServerPlayer sender = source.getPlayer();
+            if (sender == null) {
+                source.sendFailure(Component.literal("you have to be a player"));
+                return -1;
             }
+            int count = sender.getInventory().items.stream()
+                    .filter(stack -> stack.getItem() == Items.RAW_GOLD)
+                    .mapToInt(ItemStack::getCount)
+                    .sum();
+            int inc = count * 3;
+            long balance = sender.getPersistentData().contains("balance") ? sender.getPersistentData().getLong("balance") + inc : inc;
+            for (ItemStack stack : sender.getInventory().items) {
+                if (stack.getItem() == Items.RAW_GOLD) {
+                    stack.shrink(stack.getCount());
+                }
+            }
+            sender.getInventory().setChanged();
+            sender.getPersistentData().putLong("balance", balance);
+            source.sendSuccess(Component.literal("Erfolgreich $" + inc + " aufgeladen"), true);
+            return inc;
         }
-        sender.getInventory().setChanged();
-        sender.getPersistentData().putLong("balance", balance);
-        source.sendSuccess(Component.literal("Erfolgreich $" + inc + " aufgeladen"), true);
-        return inc;
+        source.sendFailure(Component.literal("Money is deactivated!"));
+        return 0;
     }
 
 }

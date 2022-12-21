@@ -33,7 +33,7 @@ public class BankSaveData extends SavedData {
 
     public static BankSaveData create() {
         ServerUtils.LOGGER.error("created");
-        return new BankSaveData();
+        return INSTANCE;
     }
 
     public static BankSaveData load(CompoundTag tag) {

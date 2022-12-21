@@ -1,17 +1,11 @@
 package com.devs.serverutils;
 
-import com.devs.serverutils.command.BalanceCommand;
-import com.devs.serverutils.command.ConvertCommand;
-import com.devs.serverutils.command.DisableEnableCommand;
-import com.devs.serverutils.command.PayCommand;
-import com.devs.serverutils.service.BankSaveData;
+import com.devs.serverutils.command.*;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,7 +33,6 @@ public class ServerUtils {
     }
 
 
-
     @SubscribeEvent
     public void loadCommands(final RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
@@ -47,13 +40,13 @@ public class ServerUtils {
         PayCommand.register(dispatcher);
         ConvertCommand.register(dispatcher);
         BalanceCommand.register(dispatcher);
+        ClearCommand.register(dispatcher);
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         LOGGER.info("Initialized bank!");
     }
-
 
 
     //    @SubscribeEvent
