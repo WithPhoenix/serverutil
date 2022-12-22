@@ -33,6 +33,10 @@ public class DebitCommand {
         long balance = player.getPersistentData().contains("balance") ? player.getPersistentData().getLong("balance") : 0; // 100  20
         long exact = Math.min(balance, amount); //30 -> 30 20
         long update = balance - exact; //100 - 30 -> 70 20 - 20 -> 0
+        if (exact == 0) {
+            source.sendFailure(Component.literal("Your balance is too low!"));
+            return -1;
+        }
 
         player.getPersistentData().putLong("balance", update);
 
@@ -41,7 +45,7 @@ public class DebitCommand {
         for (Objective o : collection) {
             if (o.getName().equals("dumb")) {
                 Score score = scoreboard.getOrCreatePlayerScore(player.getScoreboardName(), o);
-                score.setScore(amount);
+                score.add(amount);
                 source.sendSuccess(Component.literal("Debit was successful!"), true);
                 return 1;
             }

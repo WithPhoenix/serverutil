@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minecraft:to_frame",
-    "minecraft:f_by_death"
+    "minecraft:f_by_death",
+    "minecraft:create_dollar"
   ]
 }
