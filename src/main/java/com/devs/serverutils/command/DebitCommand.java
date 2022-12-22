@@ -45,7 +45,7 @@ public class DebitCommand {
         for (Objective o : collection) {
             if (o.getName().equals("dumb")) {
                 Score score = scoreboard.getOrCreatePlayerScore(player.getScoreboardName(), o);
-                score.add(amount);
+                score.add((int) exact);
                 source.sendSuccess(Component.literal("Debit was successful!"), true);
                 return 1;
             }
