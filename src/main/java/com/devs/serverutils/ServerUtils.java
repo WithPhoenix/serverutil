@@ -1,9 +1,6 @@
 package com.devs.serverutils;
 
-import com.devs.serverutils.command.BalanceCommand;
-import com.devs.serverutils.command.ClearCommand;
-import com.devs.serverutils.command.ConvertCommand;
-import com.devs.serverutils.command.PayCommand;
+import com.devs.serverutils.command.*;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
 import net.minecraft.commands.CommandSourceStack;
@@ -43,6 +40,7 @@ public class ServerUtils {
         ConvertCommand.register(dispatcher);
         BalanceCommand.register(dispatcher);
         ClearCommand.register(dispatcher);
+        DebitCommand.register(dispatcher);
     }
 
     @SubscribeEvent

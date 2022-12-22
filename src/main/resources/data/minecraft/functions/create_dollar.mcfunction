@@ -1,0 +1,2 @@
+execute as @a[scores={dumb=1..}] run give @s poisonous_potato{display:{Name:'{"text":"Dollar","color":"gold"}'},CustomModelData:2} 1
+execute as @a[scores={dumb=1..}] run scoreboard players remove @s dumb 1
