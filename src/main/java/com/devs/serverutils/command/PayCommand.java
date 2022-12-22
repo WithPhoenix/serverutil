@@ -1,6 +1,5 @@
 package com.devs.serverutils.command;
 
-import com.devs.serverutils.service.WorldSaveData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -30,27 +29,23 @@ public class PayCommand {
     }
 
     private static void pay(CommandSourceStack source, Collection<ServerPlayer> targets, int amount) {
-        if (WorldSaveData.getInstance().isEnabled()) {
-            ServerPlayer sender = source.getPlayer();
-            if (sender == null) {
-                source.sendFailure(Component.literal("you have to be a player"));
-                return;
-            }
-            if (modifyTag(source, sender.getPersistentData(), amount, targets)) {
-                StringBuilder string = new StringBuilder();
-                for (ServerPlayer p : targets) {
-                    string.append(p.getDisplayName().getString()).append(" ");
-                }
-                source.sendSuccess(Component.literal("Du hast " + amount + " an " + string + "überwiesen!"), false);
-                return;
-            }
-            if (payOffline()) {
-                return;
-            }
-            source.sendFailure(Component.literal("Not enough money!"));
+        ServerPlayer sender = source.getPlayer();
+        if (sender == null) {
+            source.sendFailure(Component.literal("you have to be a player"));
             return;
         }
-        source.sendFailure(Component.literal("Money is deactivated!"));
+        if (modifyTag(source, sender.getPersistentData(), amount, targets)) {
+            StringBuilder string = new StringBuilder();
+            for (ServerPlayer p : targets) {
+                string.append(p.getDisplayName().getString()).append(" ");
+            }
+            source.sendSuccess(Component.literal("Du hast " + amount + " an " + string + "überwiesen!"), false);
+            return;
+        }
+        if (payOffline()) {
+            return;
+        }
+        source.sendFailure(Component.literal("Not enough money!"));
     }
 
     private static boolean modifyTag(CommandSourceStack stack, CompoundTag tag, int amount, Collection<ServerPlayer> targets) {

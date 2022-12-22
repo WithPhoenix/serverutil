@@ -1,6 +1,9 @@
 package com.devs.serverutils;
 
-import com.devs.serverutils.command.*;
+import com.devs.serverutils.command.BalanceCommand;
+import com.devs.serverutils.command.ClearCommand;
+import com.devs.serverutils.command.ConvertCommand;
+import com.devs.serverutils.command.PayCommand;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
 import net.minecraft.commands.CommandSourceStack;
@@ -36,7 +39,6 @@ public class ServerUtils {
     @SubscribeEvent
     public void loadCommands(final RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
-        DisableEnableCommand.register(dispatcher);
         PayCommand.register(dispatcher);
         ConvertCommand.register(dispatcher);
         BalanceCommand.register(dispatcher);

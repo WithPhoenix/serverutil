@@ -1,6 +1,5 @@
 package com.devs.serverutils.command;
 
-import com.devs.serverutils.service.WorldSaveData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -20,9 +19,7 @@ public class DebitCommand {
     }
 
     private static int debit(CommandSourceStack source) {
-        if (WorldSaveData.getInstance().isEnabled()) {
 
-        }
         source.sendFailure(Component.literal("Money is deactivated!"));
         return -1;
     }
