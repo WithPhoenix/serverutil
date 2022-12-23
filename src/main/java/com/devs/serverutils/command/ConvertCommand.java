@@ -70,9 +70,6 @@ public class ConvertCommand {
     }
 
     private static int money(CommandSourceStack source) {
-
-        // TODO: 12/22/2022  CustomModelData 2 de is der tag
-        
         ServerPlayer sender = source.getPlayer();
         if (sender == null) {
             source.sendFailure(Component.literal("you have to be a player"));
