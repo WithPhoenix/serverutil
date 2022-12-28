@@ -15,7 +15,6 @@ import java.util.Collection;
 
 public class DebitCommand {
 
-    //todo poisonous potato wird coin,
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralCommandNode<CommandSourceStack> literalCommandNode = dispatcher.register(Commands.literal("debit").then(Commands.argument("amount", IntegerArgumentType.integer(1, 1152)).executes((p) -> {
             return debit(p.getSource(), IntegerArgumentType.getInteger(p, "amount"));
