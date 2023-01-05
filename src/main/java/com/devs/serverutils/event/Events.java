@@ -19,6 +19,7 @@ public class Events {
     @SubscribeEvent
     public static void onPlayerCloneEvent(PlayerEvent.Clone event) {
         event.getEntity().getPersistentData().putLong("balance", event.getOriginal().getPersistentData().getLong("balance"));
+        event.getEntity().getPersistentData().putString("teamxt", event.getOriginal().getTeam() == null ? "snt" : event.getOriginal().getTeam().getName());
     }
 
     @SubscribeEvent
@@ -36,16 +37,18 @@ public class Events {
 
         if (before == null) {
             player.getPersistentData().putLong(ServerUtils.MODID + "xb", pos.asLong());
-            player.getPersistentData().putInt("afkxt", ++afkTick);
+            player.getPersistentData().putInt("afkxt", afkTick >= 6000 ? 6000 : ++afkTick);
             return;
         }
         if (pos.equals(before)) {
             player.getPersistentData().putInt("afkxt", afkTick >= 6000 ? 6000 : ++afkTick);
         } else {
             player.getPersistentData().putInt("afkxt", 0);
-            changePlayerTeam(server, player.getPersistentData().getString("teamxt"), player.getScoreboardName());
+            if (team != null && team.getName().equals("afk")) {
+                changePlayerTeam(server, player.getPersistentData().getString("teamxt"), player.getScoreboardName());
+            }
         }
-        if (++afkTick == 6000) {
+        if (++afkTick >= 6000) {
             player.getPersistentData().putString("teamxt", team == null ? "snt" : team.getName());
             changePlayerTeam(server, "afk", player.getScoreboardName());
             server.getPlayerList().broadcastSystemMessage(Component.literal(player.getDisplayName().getString() + " is now afk"), true);
