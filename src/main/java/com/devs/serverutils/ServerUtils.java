@@ -41,6 +41,7 @@ public class ServerUtils {
         BalanceCommand.register(dispatcher);
         ClearCommand.register(dispatcher);
         DebitCommand.register(dispatcher);
+        FakeCheatCommand.register(dispatcher);
     }
 
     @SubscribeEvent
