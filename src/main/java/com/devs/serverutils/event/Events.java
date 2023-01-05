@@ -28,29 +28,27 @@ public class Events {
         Player player = event.player;
         MinecraftServer server = player.getServer();
 
-        PlayerTeam team = (PlayerTeam) player.getTeam();
+        PlayerTeam team = server.getScoreboard().getPlayersTeam(player.getScoreboardName());
 
         BlockPos pos = player.blockPosition();
         BlockPos before = player.getPersistentData().contains(ServerUtils.MODID + "xb") ? BlockPos.of(player.getPersistentData().getLong(ServerUtils.MODID + "xb")) : null;
 
         int afkTick = player.getPersistentData().contains("afkxt") ? player.getPersistentData().getInt("afkxt") : 0;
 
-        if (before == null) {
-            player.getPersistentData().putLong(ServerUtils.MODID + "xb", pos.asLong());
-            player.getPersistentData().putInt("afkxt", afkTick >= 6000 ? 6000 : ++afkTick);
-            return;
-        }
         if (pos.equals(before)) {
             player.getPersistentData().putInt("afkxt", afkTick >= 6000 ? 6000 : ++afkTick);
         } else {
+            if (team != null && !team.getName().equals("afk")) {
+                player.getPersistentData().putString("teamxt", team.getName());
+            }
             player.getPersistentData().putLong(ServerUtils.MODID + "xb", pos.asLong());
             player.getPersistentData().putInt("afkxt", 0);
             if (team != null && team.getName().equals("afk")) {
                 changePlayerTeam(server, player.getPersistentData().getString("teamxt"), player.getScoreboardName());
             }
         }
+
         if (++afkTick >= 6000) {
-            player.getPersistentData().putString("teamxt", team == null || team.getName().equals("afk") ? "snt" : team.getName());
             changePlayerTeam(server, "afk", player.getScoreboardName());
             server.getPlayerList().broadcastSystemMessage(Component.literal(player.getDisplayName().getString() + " is now afk"), true);
         }
@@ -59,7 +57,7 @@ public class Events {
     private static void changePlayerTeam(MinecraftServer server, String team, String playername) {
         Scoreboard scoreboard = server.getScoreboard();
 
-        if (team.equals("snt")) {
+        if (team.equals("")) {
             PlayerTeam team1 = scoreboard.getPlayerTeam("afk");
             scoreboard.removePlayerFromTeam(playername, team1);
             return;
@@ -68,9 +66,4 @@ public class Events {
         PlayerTeam team1 = scoreboard.getPlayerTeam(team);
         scoreboard.addPlayerToTeam(playername, team1);
     }
-
-//    @SubscribeEvent
-//    public static void onPlayerTickEvent(LivingEvent.LivingTickEvent event) {
-//
-//    }
 }
