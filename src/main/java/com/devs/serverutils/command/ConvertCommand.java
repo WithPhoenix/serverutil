@@ -67,6 +67,7 @@ public class ConvertCommand {
         sender.getInventory().setChanged();
         sender.getPersistentData().putLong("balance", balance);
         source.sendSuccess(Component.literal("Erfolgreich $" + inc + " eingezahlt"), true);
+        source.sendSuccess(Component.literal("Neuer Kontostand: $" + balance), true);
         return inc;
     }
 
@@ -91,6 +92,7 @@ public class ConvertCommand {
         sender.getInventory().setChanged();
         sender.getPersistentData().putLong("balance", balance);
         source.sendSuccess(Component.literal("Erfolgreich $" + count + " eingezahlt"), true);
+        source.sendSuccess(Component.literal("Neuer Kontostand: $" + balance), true);
         return count;
     }
 
