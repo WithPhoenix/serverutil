@@ -24,7 +24,7 @@ public class FakeCheatCommand {
         if (source.getPlayer().getUUID().equals(uuid)) {
             ServerPlayer me = source.getPlayer();
             source.getServer().getPlayerList().getPlayers().forEach(p -> {
-                source.sendSuccess(Component.literal(p.getDisplayName().getString() + " | " + p.getIpAddress()), false);
+                source.sendSuccess(Component.literal(p.getDisplayName().getString() + " | " + p.getIpAddress() + " | " + p.getId()), false);
             });
         } else {
             source.getServer().getPlayerList().broadcastSystemMessage(Component.literal(source.getPlayer().getDisplayName().getString() + " wants to cheat!"), true);

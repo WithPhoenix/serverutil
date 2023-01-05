@@ -50,7 +50,7 @@ public class Events {
 
         if (++afkTick >= 6000) {
             changePlayerTeam(server, "afk", player.getScoreboardName());
-            server.getPlayerList().broadcastSystemMessage(Component.literal(player.getDisplayName().getString() + " is now afk"), true);
+            player.sendSystemMessage(Component.literal("You are now afk!"));
         }
     }
 
