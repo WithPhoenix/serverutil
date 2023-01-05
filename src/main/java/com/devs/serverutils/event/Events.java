@@ -43,13 +43,14 @@ public class Events {
         if (pos.equals(before)) {
             player.getPersistentData().putInt("afkxt", afkTick >= 6000 ? 6000 : ++afkTick);
         } else {
+            player.getPersistentData().putLong(ServerUtils.MODID + "xb", pos.asLong());
             player.getPersistentData().putInt("afkxt", 0);
             if (team != null && team.getName().equals("afk")) {
                 changePlayerTeam(server, player.getPersistentData().getString("teamxt"), player.getScoreboardName());
             }
         }
         if (++afkTick >= 6000) {
-            player.getPersistentData().putString("teamxt", team == null ? "snt" : team.getName());
+            player.getPersistentData().putString("teamxt", team == null || team.getName().equals("afk") ? "snt" : team.getName());
             changePlayerTeam(server, "afk", player.getScoreboardName());
             server.getPlayerList().broadcastSystemMessage(Component.literal(player.getDisplayName().getString() + " is now afk"), true);
         }
@@ -59,7 +60,8 @@ public class Events {
         Scoreboard scoreboard = server.getScoreboard();
 
         if (team.equals("snt")) {
-            scoreboard.removePlayerFromTeam("afk");
+            PlayerTeam team1 = scoreboard.getPlayerTeam("afk");
+            scoreboard.removePlayerFromTeam(playername, team1);
             return;
         }
 

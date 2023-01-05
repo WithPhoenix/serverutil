@@ -148,7 +148,7 @@ jar {
         attributes([
                 "Specification-Title"     : "serverutils",
                 "Specification-Vendor"    : "phoenixqi",
-                "Specification-Version"   : "1.0",
+                "Specification-Version"   : "1.1.0",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "phoenixqi",
